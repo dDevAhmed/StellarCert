@@ -22,14 +22,11 @@ export default function Header(): JSX.Element {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const drawerRef = useRef<HTMLDivElement>(null);
 
-  const openDrawer = () => setDrawerOpen(true);
-  const closeDrawer = () => setDrawerOpen(false);
-
   // Close drawer on Escape key
   useEffect(() => {
     if (!drawerOpen) return;
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') closeDrawer();
+      if (e.key === 'Escape') setDrawerOpen(false);
     };
     document.addEventListener('keydown', handleKey);
     return () => document.removeEventListener('keydown', handleKey);
@@ -101,7 +98,7 @@ export default function Header(): JSX.Element {
             aria-label="Open navigation menu"
             aria-expanded={drawerOpen}
             aria-controls="mobile-nav-drawer"
-            onClick={openDrawer}
+            onClick={() => setDrawerOpen(true)}
             className="flex h-9 w-9 items-center justify-center rounded-md text-gray-700 dark:text-slate-200 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors duration-250"
           >
             <Menu className="h-5 w-5" />
@@ -115,7 +112,7 @@ export default function Header(): JSX.Element {
           data-testid="drawer-overlay"
           className="fixed inset-0 z-40 bg-black/40 md:hidden"
           aria-hidden="true"
-          onClick={closeDrawer}
+          onClick={() => setDrawerOpen(false)}
         />
       )}
 
@@ -144,7 +141,7 @@ export default function Header(): JSX.Element {
             ref={closeButtonRef}
             type="button"
             aria-label="Close navigation menu"
-            onClick={closeDrawer}
+            onClick={() => setDrawerOpen(false)}
             className="flex h-9 w-9 items-center justify-center rounded-md text-gray-700 dark:text-slate-200 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors duration-250"
           >
             <X className="h-5 w-5" />
@@ -160,7 +157,7 @@ export default function Header(): JSX.Element {
             <NavLink
               key={`${item.to}-drawer`}
               to={item.to}
-              onClick={closeDrawer}
+              onClick={() => setDrawerOpen(false)}
               className={({ isActive }) =>
                 `flex items-center gap-3 rounded-lg px-3 py-2.5 transition-colors duration-250 ${
                   isActive
